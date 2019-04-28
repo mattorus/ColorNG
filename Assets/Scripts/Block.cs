@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Block : MonoBehaviour
-{    
-    [SerializeField] uint colorInteger = uint.MaxValue;
+{
+    [SerializeField] int colorInteger = ColorNG.maxColor;
+    [SerializeField] Color32 color;
     [SerializeField] byte r = 100;
     [SerializeField] byte g = 100;
     [SerializeField] byte b = 100;
@@ -15,28 +16,27 @@ public class Block : MonoBehaviour
     private void UpdateColor()
     {
         colorHex = System.Convert.ToString(colorInteger, toBase: 16);
-        SetColor(CreateColor(r, g, b));
+        SetColor(ColorNG.CreateColor(r, g, b));
     }
 
     private void RandomizeColor()
     {
-        int randomColor = Random.Range(int.MinValue, int.MaxValue);
-
-        colorInteger = (randomColor < 0 ? (uint)(int.MaxValue - randomColor) : (uint)randomColor);
+        colorInteger = ColorNG.GenerateRandomColor();
+        // Move below code into ColorNG class
         b = (byte)(colorInteger % 256);
         g = (byte)((colorInteger / 256) % 256);
         r = (byte)((colorInteger / 65535) % 256);
     }
 
-    private UnityEngine.Color CreateColor(byte r, byte g, byte b)
-    {
-        r = (byte)(r * (r + 40) / 2);
-        g = (byte)((g + 10) / 2);
-        b = (byte)((b + 200) / 2);
+    //private UnityEngine.Color CreateColor(byte r, byte g, byte b)
+    //{
+    //    r = (byte)(r * (r + 40) / 2);
+    //    g = (byte)((g + 10) / 2);
+    //    b = (byte)((b + 200) / 2);
 
-        var retVar = new UnityEngine.Color(r / 255f, g / 255f, b / 255f);
-        return retVar; 
-    }
+    //    var retVar = new UnityEngine.Color(r / 255f, g / 255f, b / 255f);
+    //    return retVar; 
+    //}
 
     private void SetColor(UnityEngine.Color color)
     {
